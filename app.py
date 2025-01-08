@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 # Criar a aplicação Flask
@@ -49,39 +49,12 @@ def update_produto(id):
     return {"message": "Produto atualizado com sucesso!", "produto": {"id": produto.id, "nome": produto.nome}}
 
 # Operação DELETE para apagar um produto
+@app.route('/produtos/<int:id>', methods=['DELETE'])
 def delete_produto(id):
     produto = Produto.query.get_or_404(id)  # Obter o produto ou retornar 404
     db.session.delete(produto)  # Remover o produto
     db.session.commit()  # Confirmar a exclusão
     return {"message": f"Produto {id} apagado com sucesso!"}
-
-
-# # Operação GET
-# @app.route('/produtos', methods=['GET'])
-# def get_produtos():
-#     # Retorna uma lista de produtos
-#     produtos = ["Produto1", "Produto2", "Produto3"]
-#     return {"produtos": produtos}
-
-# # Operação POST
-# @app.route('/produtos', methods=['POST'])
-# def add_produto():
-#     # Adiciona um novo produto
-#     novo_produto = {"nome": "Produto4", "preco": 20.0}
-#     return {"message": "Produto adicionado com sucesso!", "produto": novo_produto}, 201
-
-# # Operação PUT
-# @app.route('/produtos/<int:id>', methods=['PUT'])
-# def update_produto(id):
-#     # Atualiza as informações de um produto existente
-#     produto_atualizado = {"id": id, "nome": "Produto Atualizado", "preco": 25.0}
-#     return {"message": "Produto atualizado com sucesso!", "produto": produto_atualizado}
-
-# # Operação DELETE
-# @app.route('/produtos/<int:id>', methods=['DELETE'])
-# def delete_produto(id):
-#     # Apaga um produto com base no ID fornecido
-#     return {"message": f"Produto {id} apagado com sucesso!"}, 200
 
 # Iniciar a aplicação no modo de depuração
 if __name__ == '__main__':
